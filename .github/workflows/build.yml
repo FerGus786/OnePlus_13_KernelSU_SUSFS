@@ -224,10 +224,8 @@ jobs:
           echo "CONFIG_NET_SCH_DEFAULT=y" >> ./common/arch/arm64/configs/gki_defconfig
           echo "CONFIG_DEFAULT_FQ=y" >> ./common/arch/arm64/configs/gki_defconfig
           echo 'CONFIG_DEFAULT_NET_SCH="fq"' >> ./common/arch/arm64/configs/gki_defconfig
-          echo "CONFIG_NET_SCH_HTB=n" >> ./common/arch/arm64/configs/gki_defconfig
-          echo "CONFIG_NET_SCH_PRIO=n" >> ./common/arch/arm64/configs/gki_defconfig
-          echo "CONFIG_NET_SCH_SFQ=n" >> ./common/arch/arm64/configs/gki_defconfig
-          echo "CONFIG_NET_SCH_TBF=n" >> ./common/arch/arm64/configs/gki_defconfig
+          #echo "CONFIG_NET_SCH_HTB=n" >> ./common/arch/arm64/configs/gki_defconfig
+          #echo "CONFIG_NET_SCH_PRIO=n" >> ./common/arch/arm64/configs/gki_defconfig
           echo "CONFIG_TCP_CONG_BIC=n" >> ./common/arch/arm64/configs/gki_defconfig
           echo "CONFIG_TCP_CONG_WESTWOOD=n" >> ./common/arch/arm64/configs/gki_defconfig
           echo "CONFIG_TCP_CONG_HTCP=n" >> ./common/arch/arm64/configs/gki_defconfig
@@ -241,7 +239,7 @@ jobs:
           # Add personal config setting
           echo "CONFIG_LOCALVERSION_AUTO=n" >> ./common/arch/arm64/configs/gki_defconfig
           echo "CONFIG_IP_NF_TARGET_ECN=y" >> ./common/arch/arm64/configs/gki_defconfig
-          echo "CONFIG_NET_SCH_CAKE=y" >> ./common/arch/arm64/configs/gki_defconfig
+          #echo "CONFIG_NET_SCH_CAKE=y" >> ./common/arch/arm64/configs/gki_defconfig
 
       - name: Update? CDG and BBR + Force ECN + Reduce overhead
         #if: ${{ inputs.kernel_version == '6.6' }}
@@ -257,8 +255,8 @@ jobs:
           #curl -O https://raw.githubusercontent.com/torvalds/linux/refs/heads/master/net/ipv4/tcp_cdg.c
           #curl -O https://raw.githubusercontent.com/torvalds/linux/refs/heads/master/net/ipv4/tcp_bbr.c
           ls -t | grep -E 'tcp_|sysctl_'
-          curl -o ../sched/sch_cake.c https://raw.githubusercontent.com/torvalds/linux/refs/heads/master/net/sched/sch_cake.c
-          curl -o /usr/include/net/gso.h https://raw.githubusercontent.com/torvalds/linux/refs/heads/master/include/net/gso.h
+          #curl -o ../sched/sch_cake.c https://raw.githubusercontent.com/torvalds/linux/refs/heads/master/net/sched/sch_cake.c
+          #curl -o /usr/include/net/gso.h https://raw.githubusercontent.com/torvalds/linux/refs/heads/master/include/net/gso.h
 
       - name: Run sed and perl Commands
         run: |
@@ -281,6 +279,7 @@ jobs:
           sed -i 's/-dirty//' ./msm-kernel/scripts/setlocalversion
           sed -i 's/-dirty//' ./external/dtc/scripts/setlocalversion
           sed -i 's/-dirty//' ./build/kernel/kleaf/workspace_status_stamp.py || echo "No workspace_status_stamp.py!"
+
           for file in $(find ${GITHUB_WORKSPACE} -type f -name 'setlocalversion' 2>/dev/null); do echo $file; sed -i 's/echo \"\$res\"/res\=\$\(echo \$res \| cut -d- -f1-4\)-FerK\; echo \"\$res\"/g' $file; done
 
           sed -i '/echo "LTO $LTO "/i export LTO=thin' ./oplus/build/oplus_setup.sh
