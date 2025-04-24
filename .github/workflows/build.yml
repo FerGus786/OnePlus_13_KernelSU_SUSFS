@@ -258,7 +258,7 @@ jobs:
           #curl -O https://raw.githubusercontent.com/torvalds/linux/refs/heads/master/net/ipv4/tcp_bbr.c
           ls -t | grep -E 'tcp_|sysctl_'
           curl -o ../sched/sch_cake.c https://raw.githubusercontent.com/torvalds/linux/refs/heads/master/net/sched/sch_cake.c
-          curl -o ../gso.h https://raw.githubusercontent.com/torvalds/linux/refs/heads/master/include/net/gso.h
+          curl -o /usr/include/net/gso.h https://raw.githubusercontent.com/torvalds/linux/refs/heads/master/include/net/gso.h
 
       - name: Run sed and perl Commands
         run: |
