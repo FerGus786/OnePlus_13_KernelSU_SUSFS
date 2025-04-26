@@ -230,9 +230,9 @@ jobs:
           # Add bbr and fq config setting
           echo "CONFIG_TCP_CONG_ADVANCED=y" >> ./common/arch/arm64/configs/gki_defconfig
           echo "CONFIG_TCP_CONG_BBR=y" >> ./common/arch/arm64/configs/gki_defconfig
-          echo "CONFIG_DEFAULT_CUBIC=n" >> ./common/arch/arm64/configs/gki_defconfig
-          echo "CONFIG_DEFAULT_BBR=y" >> ./common/arch/arm64/configs/gki_defconfig
-          echo 'CONFIG_DEFAULT_TCP_CONG="bbr"' >> ./common/arch/arm64/configs/gki_defconfig
+          #echo "CONFIG_DEFAULT_CUBIC=n" >> ./common/arch/arm64/configs/gki_defconfig
+          #echo "CONFIG_DEFAULT_BBR=y" >> ./common/arch/arm64/configs/gki_defconfig
+          #echo 'CONFIG_DEFAULT_TCP_CONG="bbr"' >> ./common/arch/arm64/configs/gki_defconfig
           #echo "CONFIG_NET_SCH_DEFAULT=y" >> ./common/arch/arm64/configs/gki_defconfig
           #echo "CONFIG_DEFAULT_FQ=y" >> ./common/arch/arm64/configs/gki_defconfig
           #echo 'CONFIG_DEFAULT_NET_SCH="fq"' >> ./common/arch/arm64/configs/gki_defconfig
@@ -250,9 +250,8 @@ jobs:
 
           # Add personal config setting
           echo "CONFIG_IP_NF_TARGET_ECN=y" >> ./common/arch/arm64/configs/gki_defconfig
-          echo "CONFIG_NET_SCH_CAKE=y" >> ./common/arch/arm64/configs/gki_defconfig
 
-      - name: Update? CDG and BBR + Force ECN + Reduce overhead
+      - name: Force ECN + Reduce overhead
         #if: ${{ inputs.kernel_version == '6.6' }}
         run: |
           cd "$CONFIG/kernel_platform/common/net/ipv4"
@@ -266,8 +265,6 @@ jobs:
           #curl -O https://raw.githubusercontent.com/torvalds/linux/refs/heads/master/net/ipv4/tcp_cdg.c
           #curl -O https://raw.githubusercontent.com/torvalds/linux/refs/heads/master/net/ipv4/tcp_bbr.c
           ls -t | grep -E 'tcp_|sysctl_'
-          curl -o ../sched/sch_cake.c https://raw.githubusercontent.com/torvalds/linux/refs/heads/master/net/sched/sch_cake.c
-          curl -o ../../include/net/gso.h https://raw.githubusercontent.com/torvalds/linux/refs/heads/master/include/net/gso.h
 
       - name: Run sed and perl Commands
         run: |
